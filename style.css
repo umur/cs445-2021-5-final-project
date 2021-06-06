@@ -4,10 +4,23 @@
   width: 50%;
   border: 3px solid green;
   padding: 20px; */
-  margin-left: 20%;
-  margin-top: 20%;
+
+  /* margin-left: 20%;
+ 
   margin-right: 20%;
   padding-left: 10%;
-  border: 3px solid green;
+  border: 3px solid green; */
+  
+  margin: auto;
+  width: 30%;
+  border: 3px solid rgb(106, 97, 189);
+  padding: 20px;
+  border-radius: 
+  5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+  text-align: center;
+  
+
+  
   
 }
