@@ -25,7 +25,7 @@
 // let div = document.querySelector("#outlet");
 // div.appendChild(text1,userLabel)
 
-const loginPage = `
+const loginPage =`
 <div id="loginDiv"><h3>Please Login</h3><hr><br>
 <label for="user">Username: </label>
 <input id="user" type="text"><br><br>
@@ -76,25 +76,23 @@ let myLong,myLati;
              myLong = thisPosition.coords.longitude;
              myLati = thisPosition.coords.latitude;
              console.log(myLong)
-             fetchLocation();
+             let geoLocationUrl = `http://open.mapquestapi.com/geocoding/v1/reverse?key=${key}&location=${myLati},${myLong}`
+             fetch(geoLocationUrl)
+             .then(respond => respond.json())
+             .then(data => {
+               console.log(data)
+                 let street = data.results[0].locations[0].street;
+                 let city = data.results[0].locations[0].adminArea5;
+                 let state = data.results[0].locations[0].adminArea3;
+                 mylocation = document.getElementById('mylocation');
+                 mylocation.innerHTML = `You are at ${street}, ${city}, ${state}`;
+                 
+             })
          } 
      )
  }
 //  "http://open.mapquestapi.com/geocoding/v1/reverse?key=kgwCfjylCzg0GhWKC2aaaMcLIc10aIQO&location=38.987779499999995,-77.0276294"
- function fetchLocation(){
-      let geoLocationUrl = `http://open.mapquestapi.com/geocoding/v1/reverse?key=${key}&location=${myLati},${myLong}`
-  fetch(geoLocationUrl)
-  .then(respond => respond.json())
-  .then(data => {
-    console.log(data)
-      let street = data.results[0].locations[0].street;
-      let city = data.results[0].locations[0].adminArea5;
-      let state = data.results[0].locations[0].adminArea3;
-      mylocation = document.getElementById('mylocation');
-      mylocation.innerHTML = `You are at ${street}, ${city}, ${state}`;
-      
-  })
- }
+
 
 
 
