@@ -1,4 +1,7 @@
-.body{
-    margin-left: 20px;
-    margin-right: 20px;
+.area {
+    
+margin: auto;
+  width: 40%;
+  border: 3px solid green;
+  padding: 2%;
 }
