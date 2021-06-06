@@ -26,7 +26,7 @@
 // div.appendChild(text1,userLabel)
 
 const loginPage = `
-<div id="loginDiv"><h3>Please Login</h3>
+<div id="loginDiv"><h3>Please Login</h3><hr><br>
 <label for="user">Username: </label>
 <input id="user" type="text"><br><br>
 <label  for="pass">Password :</label>
@@ -34,7 +34,7 @@ const loginPage = `
 <button id="loginBtn">Login</button></div>`;
 
 const animationPage =`<div id="anamtion">
-<span ><strong id="mylocation"></strong></span><br>
+<span ><strong id="mylocation"></strong></span><br><hr>
 <textarea name="" id="display" cols="35" rows="15"></textarea><br><br>
 <button id="refresh">Refresh Animation</button>
 <button id="logout">LogOut</button>
@@ -91,7 +91,7 @@ let myLong,myLati;
       let city = data.results[0].locations[0].adminArea5;
       let state = data.results[0].locations[0].adminArea3;
       mylocation = document.getElementById('mylocation');
-      mylocation.innerHTML = `Your are at ${street}, ${city}, ${state}`;
+      mylocation.innerHTML = `You are at ${street}, ${city}, ${state}`;
       
   })
  }
