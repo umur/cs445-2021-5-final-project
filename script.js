@@ -25,12 +25,13 @@
 // let div = document.querySelector("#outlet");
 // div.appendChild(text1,userLabel)
 
-const loginPage = `<h3>Please Login</h3>
+const loginPage = `
+<div id="loginDiv"><h3>Please Login</h3>
 <label for="user">Username: </label>
 <input id="user" type="text"><br><br>
 <label  for="pass">Password :</label>
 <input id="pass" type="text"><br><br>
-<button id="loginBtn">Login</button>`;
+<button id="loginBtn">Login</button></div>`;
 
 const animationPage =`<div id="anamtion">
 <h3 id="mylocation">Location</h3>
@@ -39,18 +40,22 @@ const animationPage =`<div id="anamtion">
 <button id="logout">LogOut</button>
 </div>`
 
-
 let mainDiv = document.getElementById("outlet");
-mainDiv.innerHTML = loginPage;
-mainDiv.style.marginLeft = '40%'
-mainDiv.style.marginTop = '20%';
+     mainDiv.innerHTML = loginPage;
+    //  mainDiv.style.marginLeft = '40%'
+    //  mainDiv.style.marginTop = '20%';
+let loginDiv = document.getElementById('loginDiv');
+loginDiv.classList.add('area')
  
-mainDiv.innerHTML = animationPage;
-let animDiv = document.getElementById("anamtion")
-animDiv.classList.add('area')
+
+
 
 let loginBtn = document.getElementById('loginBtn');
-loginBtn.addEventListener('click',()=>{
+loginBtn.addEventListener('click',function(){
     console.log('clicked')
-    
+    history.pushState("AnimationPage","?animation");
+    mainDiv.innerHTML = animationPage;
+
+     let animDiv = document.getElementById("anamtion")
+      animDiv.classList.add('area')
 })

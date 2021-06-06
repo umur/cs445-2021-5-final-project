@@ -1,7 +1,13 @@
 .area {
     
-margin: auto;
-  width: 40%;
+/* margin: auto;
+  width: 50%;
   border: 3px solid green;
-  padding: 2%;
+  padding: 20px; */
+  margin-left: 20%;
+  margin-top: 20%;
+  margin-right: 20%;
+  padding-left: 10%;
+  border: 3px solid green;
+  
 }
