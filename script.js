@@ -45,7 +45,7 @@ const key = `kgwCfjylCzg0GhWKC2aaaMcLIc10aIQO`
 let mainDiv = document.getElementById("outlet");
      mainDiv.innerHTML = loginPage;
 let loginDiv = document.getElementById('loginDiv');
-loginDiv.classList.add('area')
+loginDiv.classList.add('area');
  
 
 
@@ -57,10 +57,11 @@ loginBtn.addEventListener('click',()=>{
     mainDiv.innerHTML = animationPage;
     userLocation()
 
-     let animDiv = document.getElementById("anamtion")
-      animDiv.classList.add('area')
+     let animDiv = document.getElementById("anamtion");
+      animDiv.classList.add('area');
       
-      let despaly = document.getElementById('display')
+      let display = document.getElementById('display');
+
       let refreshBtn = document.getElementById('refresh');
       let logoutBtn = document.getElementById('logout')
     
