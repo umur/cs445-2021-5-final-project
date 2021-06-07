@@ -1,47 +1,113 @@
-// const express = require("express");
-// const app = express();
-// app.use(
-//     cors({origin: "*"})
-// );
-// const {cors} = cors;
-const outlet = document.querySelector("#outlet");
-function userLogIn(){
-    let out= outlet.innerHTML = `<div id=logInPage>
-    <h2> Please Log In </h2>
-    <input id="userName" placeholder="User Name" /> <br> <br> 
-    <input id="password" type="password" placeholder="password"/> <br> <br>
-    <button id="btn">  LogIn </button>
-    </div>
-    `
-    return out;
-}
+// your code here
 
-userLogIn()
-const btn = document.querySelector("#btn").addEventListener("click", sub)
-document.querySelector("#btn").addEventListener("click", ()=> history.pushState({Page:1},"","?AnimationPage"));
-const userName = document.querySelector("#userName");
-const password = document.querySelector("#password")
-function sub(e){
-    console.log(userName.value, password.value)
-   out= outlet.innerHTML = `<div "id=outlet" >
-   <div class=output></div>
-   <h3>Welcome to Fairfield</h3>
-   <textarea rows="10",cols="50" ></textarea><br><br>
-   <button id="btn1">Refresh Animation</button>   <button>logout</logout>
-   
-   </div>`
-   
-  return out   
-}
-let key ='LAvAyAA0wEwzZfTqoECxe2fxa8mDM6KT'
 
-function geoLocator(){
-    navigator.geolocation.getCurrentPosition(pos=>{
-        const lat= pos.coords.latitude;
-        const log = pos.coords.longitude;
-        console.log(lat, log)
-
-    })
-}
-geoLocator()
-
+/*loading the login page  */
+window.onload = function login() {
+    const div = document.getElementById("outlet");
+    let templateLogin = `
+                         <h1>Please Login</h1>
+                          Username<input id = "username"  value = "mwp"/></br>
+                          Password<input id = "password" value = "123"/></br>
+                          <button id = "login">Login</button>`;
+ 
+ 
+    div.innerHTML = templateLogin;
+ 
+    document.getElementById("login").onclick = getInputs;
+ 
+    function getInputs() {
+ 
+       let userName = document.getElementById("username").value;
+       let password = document.getElementById("password").value;
+ 
+       fetchToken();
+ 
+       async function fetchToken() {
+          const state = {
+             username: userName, //mwp
+             password: password  //123
+          }
+ 
+          const login_url = 'https://shrouded-badlands-76458.herokuapp.com/api/login';
+ 
+          const result = await fetch(login_url, {
+             method: "POST",
+             headers: { 'Accept': 'application/json', "content-type": "application/json" },
+             body: JSON.stringify(state)
+            
+          })
+          const data = await result.json();
+          let token = data.token;
+          if (data.status) {
+             animation(token);
+          }
+       }
+ 
+ 
+       async function animation(token) {
+          let templateAnimation = `
+                                  <h2>This is My Location</h2>
+                                 <textarea id ="animation" rows = "20" cols = "60"></textarea></br>
+                                <button id ="refresh">Refresh Animation</button>
+                               <button id ="logout">Logout</button>`;
+ 
+          div.innerHTML = templateAnimation;
+ 
+          document.getElementById("logout").onclick = function () {
+             clearInterval(intervalID);
+             window.onload();
+          }
+          document.getElementById("refresh").onclick = function () {
+             clearInterval(intervalID);
+             fetchToken();
+          }
+          function getLocation() {
+             if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+             }
+          }
+ 
+          async function showPosition(position) {
+             let lat = position.coords.latitude;
+             let lng = position.coords.longitude;
+             const apiKey = 'LAvAyAA0wEwzZfTqoECxe2fxa8mDM6KT';
+             const location_url = `http://open.mapquestapi.com/geocoding/v1/reverse?key=${apiKey}&location=${lat}, 
+                                    ${lng}&includeRoadMetadata=true&includeNearestIntersection=true`
+ 
+             const getGeoLocation = await fetch(location_url);
+             const location = await getGeoLocation.json();
+             const adress = await location.results[0].locations;
+             console.log(location)
+             document.querySelector("h2").innerHTML += `<div> ${adress[0].street} ,${adress[0].adminArea5}
+                                                        ,${adress[0].adminArea3} ,${adress[0].postalCode} ,
+                                                         ${adress[0].adminArea1} </div>`;
+ 
+          }
+          getLocation();
+ 
+          const animation_url = "https://shrouded-badlands-76458.herokuapp.com/api/animation";
+ 
+          const res = await fetch(animation_url, {
+             method: "GET",
+             headers: {
+                'Authorization': `Bearer ${token}`
+             }
+          })
+          const picture = await res.text();
+          let arrayPictures = picture.split("=====");
+ 
+          let curNewsIndex = -1;
+          let intervalID = setInterval(function () {
+             ++curNewsIndex;
+             if (curNewsIndex >= arrayPictures.length) {
+                curNewsIndex = 0;
+             }
+             document.getElementById('animation').innerHTML = arrayPictures[curNewsIndex]
+ 
+          }, 200);
+ 
+       }
+    }
+ }
+ 
+ 
