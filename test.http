@@ -1,0 +1,14 @@
+# @name login
+POST https://shrouded-badlands-76458.herokuapp.com/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "mwp", 
+    "password": "123456"
+}
+###
+@token = {{login.response.body.token}}
+###
+
+GET  https://shrouded-badlands-76458.herokuapp.com/api/animation HTTP/1.1
+Authorization: Bearer {{token}}
