@@ -1,7 +1,4 @@
 // your code here
-
-
-/*loading the login page  */
 window.onload = function login() {
     const div = document.getElementById("outlet");
     let templateLogin = `
@@ -56,7 +53,7 @@ window.onload = function login() {
           div.innerHTML = templateAnimation;
  
           document.getElementById("logout").onclick = function () {
-             history.pushState({ Page: 1 }, "", "/login");
+             //history.pushState({ Page: 1 }, "", "/login");
              clearInterval(intervalID);
              window.onload();
           }
