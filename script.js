@@ -7,13 +7,15 @@ window.onload = function login() {
     let templateLogin = `
                          <h1>Please Login</h1>
                           Username<input id = "username"  value = "mwp"/></br>
-                          Password<input id = "password" value = "123"/></br>
+                          Password<input id = "password" value = "123456"/></br>
                           <button id = "login">Login</button>`;
  
  
     div.innerHTML = templateLogin;
  
     document.getElementById("login").onclick = getInputs;
+    document.querySelector("#login").addEventListener("click", () => history.pushState({ Page: 1 }, "", "/animationPage"));
+
  
     function getInputs() {
  
@@ -25,7 +27,7 @@ window.onload = function login() {
        async function fetchToken() {
           const state = {
              username: userName, //mwp
-             password: password  //123
+             password: password  //12345
           }
  
           const login_url = 'https://shrouded-badlands-76458.herokuapp.com/api/login';
@@ -54,6 +56,7 @@ window.onload = function login() {
           div.innerHTML = templateAnimation;
  
           document.getElementById("logout").onclick = function () {
+             history.pushState({ Page: 1 }, "", "/login");
              clearInterval(intervalID);
              window.onload();
           }
@@ -77,7 +80,6 @@ window.onload = function login() {
              const getGeoLocation = await fetch(location_url);
              const location = await getGeoLocation.json();
              const adress = await location.results[0].locations;
-             console.log(location)
              document.querySelector("h2").innerHTML += `<div> ${adress[0].street} ,${adress[0].adminArea5}
                                                         ,${adress[0].adminArea3} ,${adress[0].postalCode} ,
                                                          ${adress[0].adminArea1} </div>`;
