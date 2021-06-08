@@ -3,8 +3,9 @@ window.onload = function windColl() {
 
     const loginTemplate =
         `
-                    
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">         
         <div class="container">
+        <div id="form">
               <div class="form-group">
                 <h1>Please Login</h1>
                     <label>Username:</label>
@@ -17,10 +18,10 @@ window.onload = function windColl() {
                 <div class="form-group">
                     <button class="btn btn-success" id = "login">login</button>
                 </div>
-        </>
+        </div>
         <style>
     
-           .container{
+           #form{
         margin-right: 25%;
           margin-left: 25%;
           margin-top: 40px;
@@ -67,13 +68,26 @@ window.onload = function windColl() {
     const animationTemplate = `
                                 <div class="anm">
                                     <h1 id = "location"></h1>
-                                    <textarea id="showAnimation" cols="80" rows="30"></textarea><br><br>
-                                    <button id="refresh" class="button">Refresh Animation</button>
-                                    <button type="button" id="logout">Logout</button>
+                                    <textarea id="showAnimation" cols="65" rows="30"></textarea><br><br>
+                                    <button id="refresh" class="btn btn-outline-primary">Refresh Animation</button>
+                                    <button type="button "class="btn btn-outline-primary" id="logout">Logout</button>
                                 </div>
                                 <style>
-                                .anm{
-                                    margin-left:40px
+                                
+                                h1{
+                                    font-size:24px
+                                }
+                                h1{
+                                    color:white
+                                }
+                                
+                             
+                                body{
+                                background-image: url("./assync.gif");
+                                 background-repeat: no-repeat;
+                                        background-size: cover;
+                                        resize:both
+
                                 }
                                 </style>
                                 `
@@ -104,6 +118,7 @@ window.onload = function windColl() {
                 let adrs = fetchobj.results[0].locations
                 locationAddress = `Welcome all from ${adrs[0].adminArea5},${adrs[0].adminArea3},${adrs[0].adminArea1}`
                 // console.log(adrs)
+                // locationAddress.style.backgroundcolor = "white"
                 document.querySelector("#location").innerHTML = locationAddress
             } catch (err) {
                 outlet.innerHTML = err
@@ -114,12 +129,11 @@ window.onload = function windColl() {
     lgnButton.addEventListener("click", logInFunction);
 
     function logInFunction() {
-        myFunction()// //The login function holds all the DOM elements for the credential page.
+        myAnimFunction()// //The login function holds all the DOM elements for the credential page.
     }
-    async function myFunction() {
+    async function myAnimFunction() {
         history.pushState({ page: "animation" }, "animation", "?animation")//animation's hisstory session
         outlet.innerHTML = animationTemplate;
-
         fetchLocation()
         try {
             const response = await fetch("https://shrouded-badlands-76458.herokuapp.com/api/login", {
@@ -128,7 +142,8 @@ window.onload = function windColl() {
                     "content-type": "appliction/json"
                 },
                 body: JSON.stringify({
-                    "username": "mwp", "password": "123456"
+                    "username": "mwp",
+                    "password": "123456"
                 })
             })
             const jsn = await response.json()
@@ -136,14 +151,14 @@ window.onload = function windColl() {
             const status = jsn.status
 
             if (status === true) {
-                fetchAnimation()
+                getAnimation()
             }
 
         } catch (err) {
             outlet.innerHTML = err
         }
         const animation = document.getElementById("showAnimation")
-        async function fetchAnimation() {
+        async function getAnimation() {
             let response;
             let animArray;
             try {
@@ -156,36 +171,36 @@ window.onload = function windColl() {
                 })
                 const animSrcData = await response.text()
                 animArray = animSrcData.split("=====\n")
-            }
-            catch (err) { }
+            } catch (err) { }
             let current = 0;
             let maxLength = animArray.length
             TimerId = setInterval(() => {
+                document.getElementById("showAnimation").innerHTML = animArray[current]
                 animation.innerHTML = animArray[current]
                 current++
                 if (current === maxLength) {
                     current = 0;
                 }
-                document.getElementById("showAnimation").innerHTML = animArray[current]
             }, 200)
 
         }
         //to refresh the page
-        const refresh = document.getElementById("refresh");
-        refresh.addEventListener('clear', reloadandClearanim)
+        const refresh = document.querySelector("#refresh");
+        refresh.addEventListener("clear", reloadandClearanim);
 
         function reloadandClearanim() {
             clearInterval(TimerId)
-            fetchAnimation() //fetches animation from 
+            getAnimation() //fetches animation from 
         }
 
         //Log out the page
-        const logout = document.getElementById("logout")
-        logout.addEventListener('click', logoutAnim)
+        const loggout = document.getElementById("logout")
+        loggout.addEventListener('click', logoutAnim)
         function logoutAnim() {  //
             outlet.innerHTML = loginTemplate
-            token = false
-            logInFunction()
+            const lgnbtn = document.getElementById("login");
+            lgnbtn.addEventListener("click", logInFunction)
+            history.pushState({ page: "login" }, "login", "?login")
 
         }
 
@@ -197,7 +212,7 @@ window.onload = function windColl() {
             windColl()
         } else {
             clearInterval(TimerId)
-            myFunction()
+            myAnimFunction()
         }
     })
 
