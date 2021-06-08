@@ -1,6 +1,9 @@
 window.onload = logInPage;
+let btnAnimation;
+let btnLogout;
 
 let tokenID;
+let timedAnimation;
 let myDiv = document.querySelector("#outlet");
 
 function createDivElements(type, text) {
@@ -9,10 +12,17 @@ function createDivElements(type, text) {
   return element;
 }
 
+window.addEventListener("popstate", function (e) {
+  // console.log("state: " + JSON.stringify(e.state));
+  if (e.state.page === 1) {
+    clearInterval(timedAnimation);
+    logInPage();
+  }
+});
+
 function logInPage() {
-  console.log("login-page Clicked");
   document.querySelector("#outlet").textContent = "";
-  history.pushState({ page: 1 }, "", "?page=1");
+  history.pushState({ page: 1 }, "", "?page=login");
 
   let h1 = createDivElements("h1", "Please login");
 
@@ -50,7 +60,6 @@ function logInPage() {
 }
 
 function submitted() {
-  //   document.querySelector("#submit-btn");
   let usernameInput = document.querySelector("#username").value;
   let passwordInput = document.querySelector("#password").value;
 
@@ -60,23 +69,19 @@ function submitted() {
   async function postData(url = "", data = {}) {
     const response = await fetch(url, {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
       },
-
       body: JSON.stringify(data),
     });
     return response.json();
   }
-
   const mydata = { username: usernameInput, password: passwordInput };
 
   postData(
     "https://shrouded-badlands-76458.herokuapp.com/api/login",
     mydata
   ).then((data) => {
-    console.log(data);
     tokenID = data.token;
 
     if (data.status === false) {
@@ -85,7 +90,6 @@ function submitted() {
 
       setTimeout(() => {
         h2.innerHTML = "";
-        // animationPage();
       }, 3000);
     } else {
       animationPage();
@@ -103,25 +107,24 @@ async function userLocationNew() {
 
   let getURL = `http://www.mapquestapi.com/geocoding/v1/reverse?key=${myKey}&location=${lat},${lng}&includeRoadMetadata=true&includeNearestIntersection=true`;
 
-  let x = await fetch(getURL);
-  let y = await x.json();
-  let z = await y;
-  let country = z.results[0].locations[0].adminArea1;
-  let state = z.results[0].locations[0].adminArea3;
-  let city = z.results[0].locations[0].adminArea5;
+  let response = await fetch(getURL);
+  let data = await response.json();
+  let locationData = await data;
+  let country = locationData.results[0].locations[0].adminArea1;
+  let state = locationData.results[0].locations[0].adminArea3;
+  let city = locationData.results[0].locations[0].adminArea5;
   let welcomeMessage = `Welcome all from ${city}, ${state}, ${country}`;
-  console.log(welcomeMessage);
+
   let h2 = document.createElement("h2");
   h2.innerHTML = welcomeMessage;
-  h2.style = "position:relative; bottom: 250px";
+  h2.style = "position:absolute; top: 25px";
 
   document.querySelector("#outlet").appendChild(h2);
 }
 
 function animationPage() {
-  console.log("animation-page Clicked");
   document.querySelector("#outlet").textContent = "";
-  history.pushState({ page: 2 }, "", "?page=2");
+  history.pushState({ page: 2 }, "", "?page=animation");
 
   let div = createDivElements("div");
   div.innerText = "";
@@ -130,13 +133,13 @@ function animationPage() {
   userLocationNew();
 
   let textarea = createDivElements("textarea");
-  textarea.innerHTML = "hi";
+  textarea.innerHTML = "";
   textarea.setAttribute("id", "textarea");
-  textarea.setAttribute("rows", "10");
-  textarea.setAttribute("cols", "50");
+  textarea.setAttribute("rows", "20");
+  textarea.setAttribute("cols", "75");
 
-  let btnAnimation = createDivElements("button", "Refresh Animation");
-  let btnLogout = createDivElements("button", "Logout");
+  btnAnimation = createDivElements("button", "Refresh Animation");
+  btnLogout = createDivElements("button", "Logout");
   let br = createDivElements("br");
 
   document.querySelector("#outlet").appendChild(div);
@@ -144,72 +147,51 @@ function animationPage() {
   document.querySelector("#outlet").appendChild(br);
   document.querySelector("#outlet").appendChild(btnAnimation);
   document.querySelector("#outlet").appendChild(btnLogout);
+  clearInterval(timedAnimation);
+
+  getData(
+    " https://shrouded-badlands-76458.herokuapp.com/api/animation",
+    tokenID
+  );
+  // .then((data) => console.log(data));
+}
+async function getData(url = "", token) {
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/text",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const animation = await response.text();
+
+  let animationArray = animation.split("=====\n");
+
+  let start = 0;
+  let end = animationArray.length;
+
+  timedAnimation = setInterval(() => {
+    document.querySelector("#textarea").textContent = animationArray[start];
+    start++;
+    if (start === end) {
+      start = 0;
+    }
+  }, 200);
 
   btnAnimation.addEventListener("click", refreshAni);
   btnLogout.addEventListener("click", logout);
-
-  const myToken = { Authorization: "Bearer: " + tokenID };
-
-  fetch(" https://shrouded-badlands-76458.herokuapp.com/api/animation", {
-    headers: myToken,
-  })
-    .then((res) => {
-      console.log(res);
-      return res.json();
-    })
-    .then((data) => console.log(data));
-  // console.log(tokenID);
-
-  // async function getData(url = "", token) {
-  //   const response = await fetch(url, {
-  //     header: token,
-  //   });
-  //   console.log(response);
-  //   return response.json();
-  // }
-
-  // getData(
-  //   " https://shrouded-badlands-76458.herokuapp.com/api/animation",
-  //   myToken
-  // ).then((data) => console.log(data));
 }
-
-// let getPosition = function () {
-//   return new Promise((res, rej) => {
-//     navigator.geolocation.getCurrentPosition(res, rej);
-//   });
-// };
-// getPosition().then((pos) => console.log(pos.coords));
 
 function refreshAni() {
-  async function getData(url = "", token) {
-    const response = await fetch(url, {
-      headers: token,
-    });
-    return response.json();
-  }
-  const myToken = { Authorization: tokenID };
+  clearInterval(timedAnimation);
   getData(
     " https://shrouded-badlands-76458.herokuapp.com/api/animation",
-    myToken
-  ).then((data) => console.log(data));
-
-  console.log("Refresh Ani");
-  //   clear current animation
-  // fetch request to get new animation frames and start new interca;
-  //   also fetch for users current location - send long and lat and get city, state, country ... display welcome message
-
-  //   Animation string consists of ASCII chars,
-  //   frames are separated with "=====\n",
-  //   you will need to break the frames and
-  // load one frame at a time in the textarea every 200ms.
+    tokenID
+  );
 }
+
 function logout() {
-  console.log("logout");
   //   clear the token
+  clearInterval(timedAnimation);
   logInPage();
 }
-
-window.addEventListener("popstate", function (e) {
-  console.log("state: " + JSON.stringify(e.state));
-});
