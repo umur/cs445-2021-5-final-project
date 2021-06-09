@@ -1,30 +1,3 @@
-// let text1 =  document.createElement("h1");
-// text1.innerHTML = "Please login";
-// document.body.append(text1)
-// let userLabel =  document.createElement("label");
-// userLabel.innerHTML = "Enter Username: ";
-// document.body.append(userLabel)
-// let userInput =  document.createElement("input");
-// document.body.append(userInput);
-
-// let br = document.createElement('p');
-// document.body.append(br);
-
-// let passLabel =  document.createElement("label");
-// passLabel.innerHTML = "Enter Password: ";
-// document.body.append(passLabel)
-// let passInput =  document.createElement("input");
-// document.body.append(passInput)
-
-// let br2 = document.createElement('p');
-// document.body.append(br2);
-// let btn =  document.createElement("BUTTON");
-// btn.innerHTML = "Login";
-// document.body.append(btn)
-
-// let div = document.querySelector("#outlet");
-// div.appendChild(text1,userLabel)
-
 const loginPage = `
 <div id="loginDiv"><h3>Please Login</h3><hr><br>
 <label for="user">Username: </label>
@@ -48,11 +21,9 @@ mainDiv.innerHTML = loginPage;
 let loginDiv = document.getElementById("loginDiv");
 loginDiv.classList.add("area");
 
-
 let loginBtn = document.getElementById("loginBtn");
 
-loginBtn.addEventListener("click", 
-function loginUI() {
+loginBtn.addEventListener("click", function loginUI() {
   console.log("clicked");
   history.pushState("AnimationPage", "?animation");
   mainDiv.innerHTML = animationPage;
@@ -63,9 +34,8 @@ function loginUI() {
   animDiv.classList.add("area");
 
   let display = document.getElementById("display");
-  let logoutBtn = document.getElementById("logout"); 
+  let logoutBtn = document.getElementById("logout");
   let refreshBtn = document.getElementById("refresh");
-  
 
   refreshBtn.addEventListener(
     "click",
@@ -84,32 +54,27 @@ function loginUI() {
           if (playAnimation) {
             clearInterval(playAnimation);
           }
-          let start = 0;
+          let initalAmin = 0;
           playAnimation = setInterval(() => {
-            display.innerHTML = animationString[start];
-            start++;
-            if (start === animationString.length) {
-              start = 0;
+            display.innerHTML = animationString[initalAmin];
+            initalAmin++;
+            if (initalAmin === animationString.length) {
+                initalAmin = 0;
             }
           }, 300);
         });
     })
   );
-  logoutBtn.addEventListener('click', function (){
-    history.pushState("LoginPage","/login","?loginPage")
+  logoutBtn.addEventListener("click", function () {
+    history.pushState("LoginPage", "/login", "?loginPage");
     mainDiv.innerHTML = loginPage;
     let loginDiv2 = document.getElementById("loginDiv");
     loginDiv2.classList.add("area");
     let loginBtn2 = document.getElementById("loginBtn");
-    loginBtn2.addEventListener('click',loginUI);
+    loginBtn2.addEventListener("click", loginUI);
     clearInterval(playAnimation);
+  });
 });
-});
-
-
-
-
-
 
 let mylocation;
 let myLong, myLati;
@@ -131,7 +96,6 @@ function userLocation() {
       });
   });
 }
-
 
 function loginAccess() {
   let url = "https://shrouded-badlands-76458.herokuapp.com/api/login";
