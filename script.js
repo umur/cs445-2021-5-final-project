@@ -1,5 +1,5 @@
 
-
+// loading the page
 
 window.onload = function login() {
    const div = document.getElementById("outlet");
