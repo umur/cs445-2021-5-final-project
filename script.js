@@ -55,7 +55,8 @@ loginBtn.addEventListener('click',()=>{
     console.log('clicked')
     history.pushState("AnimationPage","?animation");
     mainDiv.innerHTML = animationPage;
-    userLocation()
+    userLocation();
+    loginAccess();
 
      let animDiv = document.getElementById("anamtion");
       animDiv.classList.add('area');
@@ -65,9 +66,25 @@ loginBtn.addEventListener('click',()=>{
       let refreshBtn = document.getElementById('refresh');
       let logoutBtn = document.getElementById('logout')
     
-      refreshBtn.addEventListener('click',()=> {
-          console.log('refrashed');
+      refreshBtn.addEventListener('click',
+      animation = function(){
+          fetch(`https://shrouded-badlands-76458.herokuapp.com/api/animation`,
+          {
+              method:'GET',
+              headers:{
+                "content-type": "application/text",
+                Authorization: `Bearer ${myUniqueToken}`
+              }
+          })
+          .then((respond) => respond.text())
+          .then(data =>{
+              console.log(data)
+          })
       })
+
+      
+
+      
 })
 let mylocation;
 let myLong,myLati;
@@ -97,7 +114,7 @@ let myLong,myLati;
 
 
 
-
+let myToken;
 function loginAccess(){
     let url = 'https://shrouded-badlands-76458.herokuapp.com/api/login';
     fetch(url , {
@@ -105,11 +122,11 @@ function loginAccess(){
         headers: { "content-type": "application/json", },
         body : JSON.stringify({
             'username' : "mwp",
-            'password' : "123"
+            'password' : "123456"
         })
     })
     .then((respond) => respond.json())
     .then(data => {
-        
+        myToken = data.token;
     })
 }
