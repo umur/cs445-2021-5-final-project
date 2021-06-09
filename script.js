@@ -48,8 +48,11 @@ mainDiv.innerHTML = loginPage;
 let loginDiv = document.getElementById("loginDiv");
 loginDiv.classList.add("area");
 
+
 let loginBtn = document.getElementById("loginBtn");
-loginBtn.addEventListener("click", () => {
+
+loginBtn.addEventListener("click", 
+function loginUI() {
   console.log("clicked");
   history.pushState("AnimationPage", "?animation");
   mainDiv.innerHTML = animationPage;
@@ -60,7 +63,7 @@ loginBtn.addEventListener("click", () => {
   animDiv.classList.add("area");
 
   let display = document.getElementById("display");
-
+  let logoutBtn = document.getElementById("logout"); 
   let refreshBtn = document.getElementById("refresh");
   
 
@@ -92,7 +95,18 @@ loginBtn.addEventListener("click", () => {
         });
     })
   );
+  logoutBtn.addEventListener('click', function (){
+    history.pushState("LoginPage","/login","?loginPage")
+    mainDiv.innerHTML = loginPage;
+    let loginDiv2 = document.getElementById("loginDiv");
+    loginDiv2.classList.add("area");
+    let loginBtn2 = document.getElementById("loginBtn");
+    loginBtn2.addEventListener('click',loginUI);
+    clearInterval(playAnimation);
 });
+});
+
+
 
 
 
@@ -117,7 +131,7 @@ function userLocation() {
       });
   });
 }
-//  "http://open.mapquestapi.com/geocoding/v1/reverse?key=kgwCfjylCzg0GhWKC2aaaMcLIc10aIQO&location=38.987779499999995,-77.0276294"
+
 
 function loginAccess() {
   let url = "https://shrouded-badlands-76458.herokuapp.com/api/login";
