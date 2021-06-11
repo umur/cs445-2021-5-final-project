@@ -1,6 +1,14 @@
 // your code
 let myToken;
 let holder,play;
+let output = `  <div id="firstPage">    <samp id="location"></samp><br>
+                    <textarea  id="display" cols="30" rows="10"></textarea><br>
+                    <button id="refresh">Refresh Animation</button>
+                    <button id="logout">Logout</button>
+</div>`
+let aPage = document.querySelector("div");
+aPage.style.border = "solid";
+
 let tag2 = document.createElement("form");
 let text22 = document.createTextNode("Password");
 tag2.appendChild(text22);
@@ -20,7 +28,7 @@ user.setAttribute("type", "text");
 user.id = "users";
 document.body.appendChild(user);
 let userElement = document.querySelector("#form");
-userElement.appendChild(user);
+userElement.appendChild(user)
 
 let password = document.createElement("INPUT");
 password.setAttribute("type", "text");
@@ -37,8 +45,8 @@ login.id = "submit";
 let loginElement = document.querySelector("#form");
 loginElement.appendChild(login);
 
-const form = document.querySelector("form");
-form.addEventListener("submit", postData);
+// const form = document.querySelector("form");
+// form.addEventListener("submit", postData);
 
 // function postData(e) {
 //   e.preventDefault();
@@ -63,10 +71,7 @@ const longinbtn = document.querySelector("#submit");
 
 longinbtn.addEventListener("click", (_) => {
   history.pushState({ page: 1 }, "title 1", "?page=1"); //browther ignore title
-  let output = `    <samp id="location"></samp><br>
-                    <textarea  id="display" cols="30" rows="10"></textarea><br>
-                    <button id="refresh">Refresh Animation</button>
-                    <button id="logout">Logout</button>`;
+  
 
   const y = document.querySelector("#outlet");
   y.innerHTML = output;
@@ -75,7 +80,10 @@ longinbtn.addEventListener("click", (_) => {
   getAutentication();
  
   const refreshButton = document.querySelector("#refresh");
-  const display = document.querySelector("display");
+  const display = document.querySelector("#display");
+  const logout = document.querySelector("#logout");
+
+
   
   refreshButton.addEventListener('click',(animations = function (){
     // let url2 = ;
@@ -102,10 +110,18 @@ longinbtn.addEventListener("click", (_) => {
        let animationStart = 0;
        play=setInterval(()=>{
           display.innerHTML = holder[animationStart];
-       })
+          animationStart++;
+          if(animationStart==holder.length){
+            animationStart = 0;
+          }
+       },300)
       })
   })
   )
+  logout.addEventListener('click',()=>{
+    history.pushState("logout", "?logout");
+    // element22.innerHTML = logout 
+  })
 }
 );
 
