@@ -22,13 +22,12 @@ let loginDiv = document.getElementById("loginDiv");
 loginDiv.classList.add("area");
 
 let loginBtn = document.getElementById("loginBtn");
-
 loginBtn.addEventListener("click", function loginUI() {
 //   console.log("clicked");
   history.pushState("AnimationPage", "?animation");
   mainDiv.innerHTML = animationPage;
   userLocation();
-  loginAccess();
+  getToken();
 
   let animDiv = document.getElementById("anamtion");
   animDiv.classList.add("area");
@@ -97,7 +96,7 @@ function userLocation() {
   });
 }
 
-function loginAccess() {
+function getToken() {
   let url = "https://shrouded-badlands-76458.herokuapp.com/api/login";
   fetch(url, {
     method: "post",
