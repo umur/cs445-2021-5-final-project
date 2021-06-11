@@ -69,7 +69,7 @@ window.onload = function windColl() {
                                 <div class="anm">
                                     <h1 id = "location"></h1>
                                     <textarea id="showAnimation" cols="65" rows="30"></textarea><br><br>
-                                    <button id="refresh" class="btn btn-outline-primary">Refresh Animation</button>
+                                    <button id="refresh1" class="btn btn-outline-primary">Refresh Animation</button>
                                     <button type="button "class="btn btn-outline-primary" id="logout">Logout</button>
                                 </div>
                                 <style>
@@ -106,7 +106,7 @@ window.onload = function windColl() {
     function fetchLocation() {
         navigator.geolocation.getCurrentPosition(success, (message) => {
             alert(`${message.code}, ${message.message} `);
-            outlet.innerHTML = "please confirm location to see play animation";
+            outlet.innerHTML = "please confirm location to see animation";
         })
         async function success(position) {
             longitude = position.coords.longitude;
@@ -129,35 +129,41 @@ window.onload = function windColl() {
     lgnButton.addEventListener("click", logInFunction);
 
     function logInFunction() {
-        myAnimFunction()// //The login function holds all the DOM elements for the credential page.
+        myAnimFunction()//The login function holds all the DOM elements for the credential page.
     }
     async function myAnimFunction() {
-        history.pushState({ page: "animation" }, "animation", "?animation")//animation's hisstory session
+        history.pushState({ page: "animation" }, "animation", "?animation")//animation's history session
         outlet.innerHTML = animationTemplate;
         fetchLocation()
         try {
             const response = await fetch("https://shrouded-badlands-76458.herokuapp.com/api/login", {
                 method: "POST",
                 headers: {
-                    "content-type": "appliction/json"
+                    'Accept': "application/json",
+                    // "content-type": "appliction/json"
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: JSON.stringify({
                     "username": "mwp",
                     "password": "123456"
+
                 })
             })
             const jsn = await response.json()
             token = jsn.token
             const status = jsn.status
 
-            if (status === true) {
+            if (status == true) {
                 getAnimation()
             }
+            console.log(status)
+            console.log(response)
 
         } catch (err) {
             outlet.innerHTML = err
         }
-        const animation = document.getElementById("showAnimation")
+        const animation = document.getElementById("showAnimation");
         async function getAnimation() {
             let response;
             let animArray;
@@ -165,7 +171,6 @@ window.onload = function windColl() {
                 response = await fetch("https://shrouded-badlands-76458.herokuapp.com/api/animation", {
                     method: "GET",
                     headers: {
-                        "content-type": "application/text",
                         Authorization: `Bearer ${token}`
                     }
                 })
@@ -174,8 +179,8 @@ window.onload = function windColl() {
             } catch (err) { }
             let current = 0;
             let maxLength = animArray.length
-            TimerId = setInterval(() => {
-                document.getElementById("showAnimation").innerHTML = animArray[current]
+            TimerId = setInterval(function () {
+                // document.getElementById("showAnimation").innerHTML = animArray[current]
                 animation.innerHTML = animArray[current]
                 current++
                 if (current === maxLength) {
@@ -185,10 +190,10 @@ window.onload = function windColl() {
 
         }
         //to refresh the page
-        const refresh = document.querySelector("#refresh");
-        refresh.addEventListener("clear", reloadandClearanim);
+        const refresh = document.getElementById("refresh1");
+        refresh.addEventListener("click", reloadAndClearAnim);
 
-        function reloadandClearanim() {
+        function reloadAndClearAnim() {
             clearInterval(TimerId)
             getAnimation() //fetches animation from 
         }
@@ -206,7 +211,13 @@ window.onload = function windColl() {
 
     }
 
-    window.addEventListener("popstate", (event) => {
+    // function goBack() {
+    //     window.location.hash = window.location.lasthash[window.location.lasthash.length-1];
+    //     //
+    //     window.location.lasthash.pop();
+    // }
+
+    window.addEventListener("popstate", (event) => {  //provide the event popstate to capture browser's back/forward button click event
         if (event.state.page === "login") {
             clearInterval(TimerId)
             windColl()
@@ -216,7 +227,26 @@ window.onload = function windColl() {
         }
     })
 
+    // if(window.history && history.pushState){ // check for history api support
+    //     window.addEventListener('load', function(){
+    //         // create history states
+    //         history.pushState(-1, null); // back state
+    //         history.pushState(0, null); // main state
+    //         history.pushState(1, null); // forward state
+    //         history.go(-1); // start in main state
 
+    //         this.addEventListener('popstate', function(event, state){
+    //             // check history state and fire custom events
+    //             if(state = event.state){
 
+    //                 event = document.createEvent('Event');
+    //                 event.initEvent(state > 0 ? 'next' : 'previous', true, true);
+    //                 this.dispatchEvent(event);
 
+    //                 // reset state
+    //                 history.go(-state);
+    //             }
+    //         }, false);
+    //     }, false);
+    // }
 }
