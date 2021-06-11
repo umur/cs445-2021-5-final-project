@@ -1,0 +1,10 @@
+.area {
+  margin: auto;
+  width: 30%;
+  border: 3px solid rgb(106, 97, 189);
+  padding: 20px;
+  border-radius: 
+  5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+  text-align: center; 
+}
