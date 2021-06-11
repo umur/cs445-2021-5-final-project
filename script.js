@@ -14,27 +14,26 @@ const animationPage = `<div id="anamtion">
 </div>`;
 
 const key = `kgwCfjylCzg0GhWKC2aaaMcLIc10aIQO`;
-let playAnimation, animationString;
-let myToken;
-let mainDiv = document.getElementById("outlet");
-mainDiv.innerHTML = loginPage;
-let loginDiv = document.getElementById("loginDiv");
-loginDiv.classList.add("area");
+let playAnimation, animationString,myToken;
 
-let loginBtn = document.getElementById("loginBtn");
+const mainDiv = document.getElementById("outlet");
+mainDiv.innerHTML = loginPage;
+const loginDiv = document.getElementById("loginDiv");
+loginDiv.classList.add("area");
+const loginBtn = document.getElementById("loginBtn");
+
 loginBtn.addEventListener("click", function loginUI() {
-//   console.log("clicked");
   history.pushState("AnimationPage", "?animation");
   mainDiv.innerHTML = animationPage;
   userLocation();
   getToken();
 
-  let animDiv = document.getElementById("anamtion");
+  const animDiv = document.getElementById("anamtion");
   animDiv.classList.add("area");
 
-  let display = document.getElementById("display");
-  let logoutBtn = document.getElementById("logout");
-  let refreshBtn = document.getElementById("refresh");
+  const display = document.getElementById("display");
+  const logoutBtn = document.getElementById("logout");
+  const refreshBtn = document.getElementById("refresh");
 
   refreshBtn.addEventListener(
     "click",
@@ -75,6 +74,7 @@ loginBtn.addEventListener("click", function loginUI() {
   });
 });
 
+//User location
 let mylocation;
 let myLong, myLati;
 function userLocation() {
@@ -95,6 +95,7 @@ function userLocation() {
       });
   });
 }
+
 
 function getToken() {
   let url = "https://shrouded-badlands-76458.herokuapp.com/api/login";
