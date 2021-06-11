@@ -24,7 +24,7 @@ loginDiv.classList.add("area");
 let loginBtn = document.getElementById("loginBtn");
 
 loginBtn.addEventListener("click", function loginUI() {
-  console.log("clicked");
+//   console.log("clicked");
   history.pushState("AnimationPage", "?animation");
   mainDiv.innerHTML = animationPage;
   userLocation();
@@ -49,7 +49,7 @@ loginBtn.addEventListener("click", function loginUI() {
       })
         .then((respond) => respond.text())
         .then((data) => {
-          console.log(data);
+        //   console.log(data);
           animationString = data.split("=====\n");
           if (playAnimation) {
             clearInterval(playAnimation);
@@ -82,17 +82,17 @@ function userLocation() {
   navigator.geolocation.getCurrentPosition(function (thisPosition) {
     myLong = thisPosition.coords.longitude;
     myLati = thisPosition.coords.latitude;
-    console.log(myLong);
+    // console.log(myLong);
     let geoLocationUrl = `http://open.mapquestapi.com/geocoding/v1/reverse?key=${key}&location=${myLati},${myLong}`;
     fetch(geoLocationUrl)
       .then((respond) => respond.json())
       .then((data) => {
-        console.log(data);
-        let street = data.results[0].locations[0].street;
+        // console.log(data);
+        let country = data.results[0].locations[0].adminArea1;
         let city = data.results[0].locations[0].adminArea5;
         let state = data.results[0].locations[0].adminArea3;
         mylocation = document.getElementById("mylocation");
-        mylocation.innerHTML = `You are at ${street}, ${city}, ${state}`;
+        mylocation.innerHTML = `You are at  ${city}, ${state}, ${country},`;
       });
   });
 }
