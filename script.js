@@ -59,7 +59,7 @@ loginBtn.addEventListener("click", function loginUI() {
             display.innerHTML = animationString[initalAmin];
             initalAmin++;
             if (initalAmin === animationString.length) {
-                initalAmin = 0;
+              initalAmin = 0;
             }
           }, 300);
         });
