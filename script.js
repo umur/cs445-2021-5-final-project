@@ -11,8 +11,8 @@ let output =
 
 let login = 
 `<div class="firstPage">
-    User name<input type ="text"><br>
-    Password<Input type ="text"><br>
+    User name<input type ="text" id = uname><br>
+    Password<Input type ="text" id = pswd><br>
             <button id = "submit">login</button>
 </div>`;
 
@@ -107,6 +107,8 @@ function getAutentication() {
       "content-type": "application/json",
     },
     body: JSON.stringify({
+    // username: document.getElementById("uname").value,
+    // password: document.getElementById("pswd").value
       username: "mwp",
       password: "123456",
     }),
