@@ -54,7 +54,7 @@ function myFile() {
             }
         }
     }
-    // log in button
+    ///log in button
     const lgnButton = document.querySelector("#login")
     lgnButton.addEventListener("click", logInFunction);
     function logInFunction() {
