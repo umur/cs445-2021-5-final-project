@@ -2,7 +2,7 @@
 /*eslint-disable*/
 
 window.addEventListener('load', function finalProject() {
-    let tokenId, animationID, textId, longitude, latitude, keyId = "";
+    let tokenId, animationID, textId, longitude, latitude, keyId = "---";
 
     const myLogin = `<h1>Please login</h1><br/>
              username: <input type="text" value="mwp" id="input1" /> <br/>
