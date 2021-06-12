@@ -65,24 +65,19 @@ function myFile() {
         history.pushState({ page: "animation" }, "", "?animation")
         divOutlet.innerHTML = animationTemplate;
         fetchLocation()
-        //const myOb = { username: "mwp", password: "123456" }
+        const myOb = {"username": "mwp", "password": "123456"}
         try {
             const lg_url = "https://shrouded-badlands-76458.herokuapp.com/api/login"
             const resp = await fetch(lg_url, {
                 method: "POST",
                 headers: {
-                    // "Accept":"application/json",
-                    // "Content-Type": "appliction/json",
-                    // "Accept": "application/json"
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                     // "Content-Type": "appliction/json",
 
                 },
 
-                body: JSON.stringify({
-                    "username": "mwp", "password": "123456"
-                })
+                body: JSON.stringify(myOb)
             })
             const jsnData = await resp.json()
             token = jsnData.token
@@ -129,8 +124,7 @@ function myFile() {
             history.pushState({ page: "login" }, "login", "?login")
         }
     }
-    // refresh button
-    // const refresh = 
+   
     // document.querySelector("#btnAnimationRef").addEventListener("click", reloadandClearanim);
     const refresh = document.querySelector("#btnAnimationRef");
     refresh.addEventListener("click", reloadandClearanim);
@@ -139,8 +133,6 @@ function myFile() {
         clearInterval(TimerId)
         myAnimFunction()
     }
-    // const refresh = document.querySelector("#btnAnimationRef");
-    // refresh.addEventListener("click", reloadandClearanim);
     window.addEventListener("popstate", (event) => {
         if (event.state.page === "login") {
             clearInterval(TimerId)
