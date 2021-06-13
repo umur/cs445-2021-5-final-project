@@ -18,7 +18,7 @@ window.addEventListener('load', function finalProject() {
     window.addEventListener('popstate', function () {
         if (history.state === null) {
             document.getElementById("outlet").innerHTML = myLogin;
-            document.getElementById("login").addEventListener('click', findToken);
+            document.getElementById("login").addEventListener('click', tokenView);
 
         }
         else {
@@ -55,9 +55,9 @@ window.addEventListener('load', function finalProject() {
                 })
 
             response2 = await response2.json();
-            //console.log(response2) it shows me false sothat I can't proceed !!!
+            console.log(response2) //it shows me false sothat I can't proceed !!!
             tokenId = response2.token;
-            if (response2.status === true) {
+            if (response2.status === false) {
                 animationDisplay();
             }
         }
@@ -69,7 +69,8 @@ window.addEventListener('load', function finalProject() {
 
     function animationDisplay() {
 
-        navigator.geolocation.getCurrentPosition(success, fail);
+        let location = navigator.geolocation.getCurrentPosition(success, fail);
+        console.log(location);
 
         function fail() {
             console.log('Fail to get your location. Try again please.');
@@ -131,7 +132,7 @@ window.addEventListener('load', function finalProject() {
 
                 playAnimation();
                 async function playAnimation() {
-                    textId = await textId.split("=====\n");
+                    textId = await textId.split("========\n");
                     let count = 0;
                     history.pushState(textId, "animation", "?animation");
                     animationID = await setInterval(() => {
